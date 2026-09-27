@@ -22,9 +22,8 @@ WALL_RIGHT = 1
 
 
 
-class Circle(pygame.sprite.Sprite):
+class Circle():
     def __init__(self,x,y,vx,vy,radius,bounce,colour,density):
-        super().__init__()
         self.x = x
         self.y = y
         self.vx = vx
@@ -200,8 +199,8 @@ def main():
                         if input_boxes[2].valid:
                             RADIUS = min(int(input_boxes[2].variable),200)
 
-                        if input_boxes[3].valid:
-                            ARROW_SCALE = min(int(input_boxes[3].variable),10)
+                       # if input_boxes[3].valid:
+                       #     ARROW_SCALE = min(int(input_boxes[3].variable),10)
 
         screen.fill(BG)
 
