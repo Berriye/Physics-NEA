@@ -18,7 +18,7 @@ RADIUS = 25
 DENSITY = 1
 WALL_LEFT = 1
 WALL_RIGHT = 1
-#ARROW_SCALE = 1  --- ARROW NOT IMPLEMENTED YET ---
+ARROW_SCALE = 5  #--- ARROW NOT IMPLEMENTED YET ---
 
 
 
@@ -54,7 +54,11 @@ class Circle():
         #define y bounds
         if self.y + self.radius > FLOOR_Y:
             self.y = FLOOR_Y - self.radius
-            self.vy = -self.vy * self.bounce
+            # a bounce this slow is just gravity re-accelerating the ball, so rest it
+            if abs(self.vy) < GRAVITY * dt * 2:
+                self.vy = 0
+            else:
+                self.vy = -self.vy * self.bounce
         if self.y - self.radius < 0+SETTINGS_HEIGHT:
             self.y = self.radius+SETTINGS_HEIGHT
             self.vy = -self.vy * self.bounce
@@ -125,7 +129,7 @@ def main():
     input_boxes.append(GUI.NumInputBox(50, 25, 60, 20, float, "Gravity (9.81)", GRAVITY/100, GRAVITY,10000))
     input_boxes.append(GUI.NumInputBox(50,75,60, 20, float, "Density (1)", DENSITY, DENSITY,100))
     input_boxes.append(GUI.NumInputBox(250, 25, 60, 20, int, "Radius (25)", RADIUS, RADIUS,100))
-    #input_boxes.append(GUI.NumInputBox(250, 75, 60, 20, int, "Arrow Scale (1)", ARROW_SCALE, ARROW_SCALE, 10)) --- ARROW NOT IMPLEMENTED YET ---
+    input_boxes.append(GUI.NumInputBox(250, 75, 60, 20, float, "Arrow Scale (1)", ARROW_SCALE, ARROW_SCALE, 10)) # --- ARROW NOT IMPLEMENTED YET ---
 
     tick_boxes = []
     tick_boxes.append(GUI.TickBox(450,25,20,20,"Left Wall", 1, WALL_LEFT))
@@ -146,7 +150,7 @@ def main():
                     x,y = event.pos
                     x = min(max(x,RADIUS),BOUNDS[0]-RADIUS)
                     y = min(max(y,RADIUS),BOUNDS[1]+SETTINGS_HEIGHT-RADIUS)
-                    balls.append(Circle(x,y,0,0,RADIUS, 0.8, (random.randint(0,255),random.randint(0,255),random.randint(0,255)),DENSITY))
+                    balls.append(Circle(x,y,0,0,RADIUS, 0.8, (random.randint(0,100),random.randint(0,100),random.randint(0,100)),DENSITY))
                     if len(balls) == 10:
                         balls.remove(balls[0])
                 elif event.button == 3:
@@ -194,13 +198,13 @@ def main():
                             GRAVITY = min(float(input_boxes[0].variable),10000)
 
                         if input_boxes[1].valid:
-                            DENSITY = min(int(input_boxes[1].variable),100)
+                            DENSITY = min(float(input_boxes[1].variable),100)
 
                         if input_boxes[2].valid:
                             RADIUS = min(int(input_boxes[2].variable),200)
 
-                       # if input_boxes[3].valid:
-                       #     ARROW_SCALE = min(int(input_boxes[3].variable),10)
+                        if input_boxes[3].valid:
+                            ARROW_SCALE = min(float(input_boxes[3].variable),10)
 
         screen.fill(BG)
 
@@ -220,14 +224,15 @@ def main():
 
         for ball in balls:
             ball.draw(screen)
-
+            GUI.draw_arrow(screen,ball.x,ball.y,ball.vx,ball.vy,10,ARROW_SCALE/10,(255,0,0))
+#int((ball.vx**2+ball.vy**2)**0.5)
 
 
         pygame.draw.line(screen,(255,255,255),(0,FLOOR_Y),(BOUNDS[0],FLOOR_Y),2)
         pygame.draw.rect(screen,(255,255,255),FLOOR_RECT)
         pygame.draw.rect(screen, (100,100,100),SETTINGS_RECT)
         pygame.draw.line(screen,(255,255,255),(0,SETTINGS_HEIGHT),(BOUNDS[0],SETTINGS_HEIGHT),2)
-
+        #pygame.draw.line(screen,(123,123,0),(0,0),(200,400),100)
 
         for box in input_boxes:
             box.draw(screen)
@@ -239,6 +244,6 @@ def main():
         print(GRAVITY)
     pygame.quit()
 
-
+23
 if __name__ == '__main__':
     main()

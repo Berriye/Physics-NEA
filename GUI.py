@@ -40,8 +40,11 @@ class NumInputBox:
                 self.input = self.input[:-1]
             else:
                 if event.unicode in ["0","1","2","3","4","5","6","7","8","9","."]:
-                    self.input += event.unicode
-                    self.input = str(min(int(self.input), self.max_value))
+
+                    if float(self.input+event.unicode) > self.max_value:
+                        self.input = str(self.max_value)
+                    else:
+                        self.input += event.unicode
         return True
 
     def draw(self,surface):
@@ -89,6 +92,10 @@ class TickBox:
         text_pos = (self.rect.x, self.rect.y - text.get_height())
         surface.blit(text, text_pos)
 
+
+
+def draw_arrow(surface,x,y,vx,vy,length,scale,colour):
+    pygame.draw.line(surface,colour,(x,y),(x+(scale*vx),y+(scale*vy)),5)
 
 
 
