@@ -1,0 +1,5 @@
+P to pause
+C to clear balls
+RMB to delete hovered ball
+LMB to spawn ball
+N while paused to pass "step seconds" amount of seconds and repause
