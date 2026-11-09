@@ -1,9 +1,8 @@
-from main import *
 import pygame
 import math
 
 class Circle:
-    def __init__(self,x,y,vx,vy,radius,bounce,colour,density):
+    def __init__(self, x, y, vx, vy, radius, bounce, colour, density):
         self.x = x
         self.y = y
         self.vx = vx
@@ -12,40 +11,36 @@ class Circle:
         self.bounce = bounce
         self.colour = colour
         self.density = density
-        self.mass =(3.141592 * float(radius**2) * float(density))
+        self.mass = 3.141592 * float(radius**2) * float(density)
 
-    def gravity(self, dt):
-        self.vy += GRAVITY * dt
+    def gravity(self, dt, g):
+        self.vy += g * dt
 
-    def step(self,dt,bounds):
-        x_b,y_b = bounds
+    def step(self, dt, bounds, floor_y, ceiling_y, g, wall_left, wall_right):
+        x_b, y_b = bounds
 
-        #consider velocity
         self.x += self.vx * dt
         self.y += self.vy * dt
 
-        #define x bounds
-        if self.x - self.radius < 0 and WALL_LEFT:
+        if self.x - self.radius < 0 and wall_left:
             self.x = self.radius
             self.vx = -self.vx * self.bounce
-        if self.x + self.radius > x_b and WALL_RIGHT:
+        if self.x + self.radius > x_b and wall_right:
             self.x = x_b - self.radius
             self.vx = -self.vx * self.bounce
 
-        #define y bounds
-        if self.y + self.radius > FLOOR_Y:
-            self.y = FLOOR_Y - self.radius
-            # ignore floor accelerationm
-            if abs(self.vy) < GRAVITY * dt * 1.1:
+        if self.y + self.radius > floor_y:
+            self.y = floor_y - self.radius
+            if abs(self.vy) < g * dt * 1.1:
                 self.vy = 0
             else:
                 self.vy = -self.vy * self.bounce
-        if self.y - self.radius < 0+SETTINGS_HEIGHT:
-            self.y = self.radius+SETTINGS_HEIGHT
+        if self.y - self.radius < ceiling_y:
+            self.y = self.radius + ceiling_y
             self.vy = -self.vy * self.bounce
 
-    def draw(self,surface):
-        pygame.draw.circle(surface,self.colour,(self.x,self.y),self.radius)
+    def draw(self, surface):
+        pygame.draw.circle(surface, self.colour, (self.x, self.y), self.radius)
 
 def Circle_collision(a: Circle,b: Circle):
     dx = a.x - b.x

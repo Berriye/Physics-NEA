@@ -175,8 +175,8 @@ def main():
                     paused = True
 
             for ball in balls:
-                ball.gravity(step_dt)
-                ball.step(step_dt,BOUNDS)
+                ball.gravity(step_dt, GRAVITY)
+                ball.step(step_dt, BOUNDS, FLOOR_Y, SETTINGS_HEIGHT, GRAVITY, WALL_LEFT, WALL_RIGHT)
 
 
             for _ in range(10):
@@ -219,6 +219,7 @@ def main():
             box.draw(screen)
 
         pygame.display.flip()
+        print(WALL_LEFT,WALL_RIGHT)
     pygame.quit()
 
 if __name__ == '__main__':
