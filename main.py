@@ -200,7 +200,7 @@ def main():
         mx, my = pygame.mouse.get_pos()
         for ball in balls:
             if (ball.x - mx) ** 2 + (ball.y - my) ** 2 <= ball.radius ** 2 or ALWAYS_DRAW_STATS:
-                GUI.draw_stats(screen,SETTINGS_HEIGHT,  ball.x, ball.y, ball.colour, ball.vx, ball.vy, ball.mass, ball.radius)
+                GUI.draw_stats(screen,SETTINGS_HEIGHT,  ball.x, ball.y, ball.colour, ball.vx, ball.vy, ball.mass, ball.radius, ball.bounce)
 
 
 

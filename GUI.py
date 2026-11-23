@@ -114,7 +114,7 @@ def draw_arrow(surface,momentum_arrow,x,y,vx,vy,mass,length,scale,colour):
 
 
 
-def draw_stats(surface,settings_height,x,y,colour,vx,vy,mass,radius):
+def draw_stats(surface,settings_height,x,y,colour,vx,vy,mass,radius,bounce):
     velocity = ((vx**2 + vy**2)**0.5)/100 #m/s
     mass_kg = mass/(100**2)
     KE = 0.5*mass_kg*(velocity)**2
@@ -122,6 +122,7 @@ def draw_stats(surface,settings_height,x,y,colour,vx,vy,mass,radius):
     KE_text = GUI_FONT.render(f"KE: {abs(round(KE,2))}", True, colour)
     V_text = GUI_FONT.render(f" V: {abs(round(velocity,2))}", True, colour)
     M_text = GUI_FONT.render(f" M: {abs(round(mass_kg,2))}", True, colour)
+    BOUNCE_text = GUI_FONT.render(f" E: {abs(round(bounce,2))}", True, colour)
 
     width = max(KE_text.get_width(), V_text.get_width(), M_text.get_width())
     height = 40 + KE_text.get_height()
@@ -131,9 +132,10 @@ def draw_stats(surface,settings_height,x,y,colour,vx,vy,mass,radius):
     if top - 4 < settings_height:
         top = y + radius + 14
 
-    box = pygame.Rect(left-4, top-4, width+8, height+8)
+    box = pygame.Rect(left-4, top-22, width+8, height+26)
     pygame.draw.rect(surface, (120,120,120), box)
 
+    surface.blit(BOUNCE_text, (left, top-20))
     surface.blit(KE_text, (left, top))
     surface.blit(V_text, (left, top+20))
     surface.blit(M_text, (left, top+40))
