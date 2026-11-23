@@ -219,7 +219,6 @@ def main():
             box.draw(screen)
 
         pygame.display.flip()
-        print(WALL_LEFT,WALL_RIGHT)
     pygame.quit()
 
 if __name__ == '__main__':
